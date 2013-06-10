@@ -9,7 +9,8 @@
 	"require-dev": {
 		"phpunit/phpunit": "3.7.*",
 		"phing/phing": "*",
-		"squizlabs/php_codesniffer": "*"
+		"squizlabs/php_codesniffer": "*",
+		"morphodo/phpunit-base-test-case": "*"
 	},
 	"autoload": {
 		"psr-0": {

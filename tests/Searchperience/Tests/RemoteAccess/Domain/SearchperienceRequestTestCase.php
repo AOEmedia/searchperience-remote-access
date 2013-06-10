@@ -1,8 +1,25 @@
 <?php
+
+
+namespace Searchperience\Tests\RemoteAccess\Domain;
+
 /**
- * Created by JetBrains PhpStorm.
- * User: timo.schmidt
- * Date: 10.06.13
- * Time: 12:06
- * To change this template use File | Settings | File Templates.
+ * Class SearchperienceRequestTestCase
+ * @package Searchperience\Tests\RemoteAccess\Domain
  */
+class SearchperienceRequestTestCase extends \Searchperience\Tests\BaseTestCase{
+
+	/**
+	 * @return void
+	 */
+	public function setUp() {
+		$this->setFixtureBasePath(__DIR__);
+	}
+
+	/**
+	 * @test
+	 */
+	public function testGetUrl() {
+
+	}
+}
