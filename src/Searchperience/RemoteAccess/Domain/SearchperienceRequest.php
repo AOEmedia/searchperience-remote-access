@@ -1,8 +1,15 @@
 <?php
+
+
+namespace Searchperience\Tests\RemoteAccess\Domain;
+
 /**
- * Created by JetBrains PhpStorm.
- * User: timo.schmidt
- * Date: 10.06.13
- * Time: 12:05
- * To change this template use File | Settings | File Templates.
+ * The searchperience request is responsible to generate an url that can be used to
+ * retrieve valid results from a searchperience remote system.
+ *
+ * @author Pavlo Bogomolenko <pavlo.bogomolenko@aoemedia.de>
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
  */
+class SearchperienceRequest {
+
+}
