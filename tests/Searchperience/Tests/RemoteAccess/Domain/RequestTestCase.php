@@ -4,10 +4,10 @@
 namespace Searchperience\Tests\RemoteAccess\Domain;
 
 /**
- * Class SearchperienceRequestTestCase
+ * Class RequestTestCase
  * @package Searchperience\Tests\RemoteAccess\Domain
  */
-class SearchperienceRequestTestCase extends \Searchperience\Tests\BaseTestCase{
+class RequestTestCase extends \Searchperience\Tests\BaseTestCase{
 
 	/**
 	 * @return void
