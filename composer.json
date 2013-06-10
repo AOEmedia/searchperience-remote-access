@@ -1,0 +1,36 @@
+{
+	"name": "aoemedia/searchperience-remote-access",
+	"description": "PHP Library to render searchperience pages from a remote system",
+	"homepage": "http://www.searchperience.com/",
+	"license": "MIT",
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "3.7.*",
+		"phing/phing": "*",
+		"squizlabs/php_codesniffer": "*"
+	},
+	"autoload": {
+		"psr-0": {
+			"Searchperience\\Tests": "tests/",
+			"Searchperience": "src/"
+		}
+	},
+	"minimum-stability": "stable",
+	"authors": [
+		{
+			"name": "Pavlo Bogomolenko",
+			"email": "pavlo.bogomolenko@aoemedia.de"
+		},
+		{
+			"name": "Timo Schmidt",
+			"email": "timo.schmidt@aoemedia.de"
+		},
+		{
+			"name": "AOE media",
+			"email": "dev@aoemedia.de",
+			"homepage": "http://www.aoemedia.com"
+		}
+	]
+}
