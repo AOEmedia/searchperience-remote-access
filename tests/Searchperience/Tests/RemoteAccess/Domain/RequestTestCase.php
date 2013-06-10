@@ -7,7 +7,7 @@ namespace Searchperience\Tests\RemoteAccess\Domain;
  * Class RequestTestCase
  * @package Searchperience\Tests\RemoteAccess\Domain
  */
-class RequestTestCase extends \Searchperience\Tests\BaseTestCase{
+class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 
 	/**
 	 * @return void

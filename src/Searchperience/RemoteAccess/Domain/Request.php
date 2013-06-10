@@ -12,4 +12,10 @@ namespace Searchperience\RemoteAccess\Domain;
  */
 class Request {
 
+	/**
+	 * @return string
+	 */
+	public function getUrl() {
+
+	}
 }
