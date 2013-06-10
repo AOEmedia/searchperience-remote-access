@@ -2,7 +2,7 @@
 <project basedir="../../" default="test">
     <property name="cmd.composer" value="" />
 
-    <target name="travisci" depends="install-dependencies,composer-lint,php-lint,test"/>
+    <target name="travisci" depends="install-dependencies,update-composer,composer-lint,php-lint,test"/>
 
     <target name="composer-lint" depends="install-composer" description="lint-check composer.json only">
         <exec passthru="true" command="${cmd.composer} validate ${project.basedir}/composer.json" checkReturn="true" />

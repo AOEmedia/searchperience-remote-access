@@ -14,6 +14,7 @@ if necessary, installing composer.phar locally.
             <contains string="${cmd.composer}" substring="composer" />
             <then>
                 <echo>Using composer at ${cmd.composer}</echo>
+
             </then>
             <else>
                 <exec command="which composer" outputProperty="cmd.composer" />
@@ -61,6 +62,10 @@ if necessary, installing composer.phar locally.
 
     <target name="update-dependencies" depends="install-composer">
         <exec command="${cmd.composer} update --dev" passthru="true" />
+    </target>
+
+    <target name="update-composer" depends="install-composer">
+        <exec command="${cmd.composer} self-update --dev" passthru="true" />
     </target>
 
     <target name="clean-dependencies">
