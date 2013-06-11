@@ -68,6 +68,20 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 		$this->assertEquals($testUrl, $this->request->getUrl());
 	}
 
+
+
+	/**
+	 * @test
+	 */
+	public function testCanChain() {
+		$testUrl = 'http://google.de/index.php?id=0&tx_aoesolr_pi1[action]=search&tx_aoesolr_pi1[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search&tx_aoesolr_pi1[facetsel][option][brand_s][0]=puma&tx_aoesolr_pi1[facetsel][option][brand_s][1]=nike';
+		$this->request->setEndPointHostname('http://google.de/')
+				->setFacetOptionValue('brand_s', 'puma')
+				->setFacetOptionValue('brand_s', 'nike')
+				->setNamespace('tx_aoesolr_pi1');
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
+
 	/**
 	 * @test
 	 */
@@ -102,6 +116,18 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 		$this->request->setEndPointHostname('http://test.url/');
 		$this->request->setEndpointPath('');
 		$this->request->buildRequestFromParams($params);
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
+
+	/**
+	 * @test
+	 */
+	public function testSetQueryString() {
+		$testUrl = 'http://google.de/index.php?id=0&tx_aoesolr_pi1[action]=search&tx_aoesolr_pi1[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search&tx_aoesolr_pi1[facetsel][option][cat_s][0]=cloth&tx_aoesolr_pi1[querystring]=searching';
+		$this->request->setEndPointHostname('http://google.de/');
+		$this->request->setFacetOptionValue('cat_s', 'cloth');
+		$this->request->setNamespace('tx_aoesolr_pi1');
+		$this->request->setQueryString('searching');
 		$this->assertEquals($testUrl, $this->request->getUrl());
 	}
 }

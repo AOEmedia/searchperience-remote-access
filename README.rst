@@ -70,8 +70,7 @@ Example:
 ::
 
 		$request = \Searchperience\RemoteAccess\Domain\Factory::createRequest();
-		$request->addFacetOption('category_s','plates');
-		$request->addFacetOption('color_s','blue');
+		$request->addFacetOption('category_s','plates')->addFacetOption('color_s','blue');
 
 		$client  	= \Searchperience\RemoteAccess\Domain\Factory::createClient();
 		$response 	= $client->fetch($request);

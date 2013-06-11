@@ -60,20 +60,9 @@ class Request {
 	private $action = 'search';
 
 	/**
-	 * @param string $action
+	 * @var string
 	 */
-	public function setAction($action)
-	{
-		$this->action = $action;
-	}
-
-	/**
-	 * @param string $controller
-	 */
-	public function setController($controller)
-	{
-		$this->controller = $controller;
-	}
+	private $queryString = null;
 
 	/**
 	 * @var string
@@ -88,42 +77,61 @@ class Request {
 	private $addedFacests = array();
 
 	/**
-	 * @param string $eid
+	 * @param string $action
+	 * @return Request
 	 */
-	public function setEid($eid)
-	{
+	public function setAction($action) {
+		$this->action = $action;
+		return $this;
+	}
+
+	/**
+	 * @param string $controller
+	 * @return Request
+	 */
+	public function setController($controller) {
+		$this->controller = $controller;
+		return $this;
+	}
+
+	/**
+	 * @param string $eid
+	 * @return Request
+	 */
+	public function setEid($eid) {
 		$this->eid = $eid;
+		return $this;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getEid()
-	{
+	public function getEidUrlPart() {
 		return '&eID=' . $this->eid;
 	}
 
 	/**
 	 * @param string $dataType
+	 * @return Request
 	 */
-	public function setDataType($dataType)
-	{
+	public function setDataType($dataType) {
 		$this->dataType = $dataType;
+		return $this;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getDataType()
-	{
+	public function getDataTypeUrlPart() {
 		return '&dataType='. $this->dataType;
 	}
 
 	/**
 	 * @param string $endPointHostname
+	 * @return Request
+	 *
 	 */
-	public function setEndPointHostname($endPointHostname)
-	{
+	public function setEndPointHostname($endPointHostname) {
 		if(!filter_var($endPointHostname, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
 			throw new UrlExeption("wrong hostname format");
 		}
@@ -135,16 +143,15 @@ class Request {
 	/**
 	 * @return string
 	 */
-	public function getEndPointHostname()
-	{
+	public function getEndPointHostname() {
 		return $this->endPointHostname;
 	}
 
 	/**
 	 * @param string $endpointPath
+	 * @return Request
 	 */
-	public function setEndpointPath($endpointPath)
-	{
+	public function setEndpointPath($endpointPath) {
 		$this->endpointPath = $endpointPath;
 		return $this;
 	}
@@ -152,18 +159,16 @@ class Request {
 	/**
 	 * @return string
 	 */
-	public function getEndpointPath()
-	{
+	public function getEndpointPath() {
 		return $this->endpointPath;
 	}
 
 	/**
 	 * @param $option
 	 * @param $value
-	 * @return $this
+	 * @return Request
 	 */
-	public function setFacetOptionValue($option, $value)
-	{
+	public function setFacetOptionValue($option, $value) {
 		if (preg_match('/[^A-Za-z0-9_\-]/', $option)) {
 			throw new FacetExeption("illegal charecter detected in facet option");
 		}
@@ -179,33 +184,32 @@ class Request {
 	/**
 	 * @return array
 	 */
-	public function getFacetOptionValue()
-	{
+	public function getFacetOptionValue() {
 		return $this->facetOptionValue;
 	}
 
 	/**
 	 * @param int $instance
+	 * @return Request
 	 */
-	public function setInstance($instance)
-	{
+	public function setInstance($instance) {
 		$this->instancePid = $instance;
 		return $this;
 	}
 
 	/**
 	 * @return int
+	 * @return Request
 	 */
-	public function getInstance()
-	{
+	public function getInstance() {
 		return $this->instance;
 	}
 
 	/**
 	 * @param string $namespace
+	 * @return Request
 	 */
-	public function setNamespace($namespace)
-	{
+	public function setNamespace($namespace) {
 		$this->namespace = $namespace;
 		return $this;
 	}
@@ -213,34 +217,53 @@ class Request {
 	/**
 	 * @return string
 	 */
-	public function getNamespace()
-	{
+	public function getNamespace() {
 		return $this->namespace;
 	}
 
 	/**
 	 * @return string
 	 */
-	private function getAction() {
+	private function getActionUrlPart() {
 		return $this->getNamespace() . '[action]=' . $this->action;
 	}
 
 	/**
 	 * @return string
 	 */
-	private function getController() {
+	private function getControllerUrlPart() {
 		return '&'. $this->getNamespace() . '[controller]=' . $this->controller;
+	}
+
+	/**
+	 * @param $queryString
+	 * @return Request
+	 */
+	public function setQueryString($queryString) {
+		$this->queryString = $queryString;
+		return $this;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function generateFacetParams()
-	{
+	private function getQueryStringUrlPart() {
+		if(!is_string($this->queryString)) {
+			return  '';
+		}
+
+		return '&'. $this->getNamespace() . '[querystring]=' . $this->queryString;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function generateFacetUrlParts() {
 		$facet = '';
 		$tmpFacetCount = 0;
 		$this->addedFacests = array();
-		foreach($this->getFacetOptionValue() as $facets){
+
+		foreach($this->getFacetOptionValue() as $facets) {
 			if(array_key_exists($facets[0], $this->addedFacests)) {
 				$this->addedFacests[$facets[0]] = $this->addedFacests[$facets[0]] + 1;
 				$tmpFacetCount = $this->addedFacests[$facets[0]];
@@ -257,7 +280,7 @@ class Request {
 	/**
 	 * @return string
 	 */
-	public function getPath() {
+	public function getPathUrlPart() {
 		$path = '';
 		if(strstr($this->getEndpointPath(), '###instance###')) {
 			$path = str_replace('###instance###', $this->getInstance(), $this->getEndpointPath()) . '&';
@@ -301,15 +324,15 @@ class Request {
 	/**
 	 * @return string
 	 */
-	public function getUrl()
-	{
+	public function getUrl() {
 		$this->url = $this->getEndPointHostname()
-			. $this->getPath()
-			. $this->getAction()
-			. $this->getController()
-			. $this->getDataType()
-			. $this->getEid()
-			. $this->generateFacetParams();
+			. $this->getPathUrlPart()
+			. $this->getActionUrlPart()
+			. $this->getControllerUrlPart()
+			. $this->getDataTypeUrlPart()
+			. $this->getEidUrlPart()
+			. $this->generateFacetUrlParts()
+			. $this->getQueryStringUrlPart();
 		return $this->url;
 	}
 }
