@@ -13,7 +13,7 @@ class Factory {
 	/**
 	 * @return \Searchperience\RemoteAccess\Domain\Client
 	 */
-	public static function createRemoteAccessClient() {
+	public static function createClient() {
 		$searchperienceClient 		= new \Searchperience\RemoteAccess\Domain\Client();
 		$httpClient 				= new \Guzzle\Http\Client();
 		$searchperienceClient->injectHttpClient($httpClient);
