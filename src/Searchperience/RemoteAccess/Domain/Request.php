@@ -45,6 +45,11 @@ class Request {
 	private $facetOptionValue = array();
 
 	/**
+	 * @var array
+	 */
+	private $facetRangeOptionValue = array();
+
+	/**
 	 * @var string
 	 */
 	private $dataType = 'jsonp';
@@ -70,6 +75,8 @@ class Request {
 	private $controller = 'Search';
 
 	const FACET_MARKER = '[facetsel][option]';
+
+	const RANGE_FACET_MARKER = '[facetsel][range]';
 
 	/**
 	 * @var array key/count
@@ -193,7 +200,7 @@ class Request {
 	 * @return Request
 	 */
 	public function setInstance($instance) {
-		$this->instancePid = $instance;
+		$this->instance = $instance;
 		return $this;
 	}
 
@@ -256,6 +263,35 @@ class Request {
 	}
 
 	/**
+	 * @param array $facetRangeOptionValue
+	 */
+	public function setFacetRangeOptionValue($option, $key, $value)
+	{
+		if (preg_match('/[^A-Za-z0-9_\-]/', $option)) {
+			throw new FacetExeption("illegal charecter detected in facet range option");
+		}
+
+		if (preg_match('/[^A-Za-z0-9_\-]/', $key)) {
+			throw new FacetExeption("illegal charecter detected in facet range key");
+		}
+
+		if (preg_match('/[^A-Za-z0-9\-]/', $value)) {
+			throw new FacetExeption("illegal charecter detected in facet range value");
+		}
+
+		$this->facetRangeOptionValue[$option][] = array($key, $value);
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getFacetRangeOptionValue()
+	{
+		return $this->facetRangeOptionValue;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function generateFacetUrlParts() {
@@ -275,6 +311,20 @@ class Request {
 			$tmpFacetCount = 0;
 		}
 		return $facet;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function generateFacetRangeUrlParts() {
+		$facetStr = '';
+		foreach($this->getFacetRangeOptionValue() as $facetsKey => $facetRange) {
+			foreach($facetRange as $facet) {
+				$facetStr .= '&' . $this->getNamespace() . self::RANGE_FACET_MARKER . '[' . $facetsKey .  ']' .
+					'[' . $facet[0]  . ']' . '=' . $facet[1];
+			}
+		}
+		return $facetStr;
 	}
 
 	/**
@@ -315,6 +365,13 @@ class Request {
 						}
 					}
 					break;
+				case 'range':
+					foreach($value as $facetOption => $facetMap) {
+						foreach($facetMap as $facetKey => $facetValue) {
+							$this->setFacetRangeOptionValue($facetOption, $facetKey, $facetValue);
+						}
+					}
+					break;
 				default:
 					$this->buildRequestFromParams($value);
 			}
@@ -325,6 +382,7 @@ class Request {
 	 * @return string
 	 */
 	public function getUrl() {
+		$this->generateFacetRangeUrlParts();
 		$this->url = $this->getEndPointHostname()
 			. $this->getPathUrlPart()
 			. $this->getActionUrlPart()
@@ -332,6 +390,7 @@ class Request {
 			. $this->getDataTypeUrlPart()
 			. $this->getEidUrlPart()
 			. $this->generateFacetUrlParts()
+			. $this->generateFacetRangeUrlParts()
 			. $this->getQueryStringUrlPart();
 		return $this->url;
 	}

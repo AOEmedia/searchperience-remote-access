@@ -39,6 +39,17 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function testGetUrlWithRangeFacet() {
+		$testUrl = 'http://google.de/index.php?id=0&searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search&searchperience[facetsel][range][price][min]=10&searchperience[facetsel][range][price][max]=100';
+		$this->request->setEndPointHostname('http://google.de/');
+		$this->request->setFacetRangeOptionValue('price', 'min', 10);
+		$this->request->setFacetRangeOptionValue('price', 'max', 100);
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
+
+	/**
+	 * @test
+	 */
 	public function testGetUrlWithCustomPath() {
 		$testUrl = 'http://google.de/test/test?searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search';
 		$this->request->setEndPointHostname('http://google.de/');
@@ -96,7 +107,7 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 	 * @test
 	 */
 	public function testBuildRequestFromParams() {
-		$testUrl = 'http://test.url/?searchperience[action]=testSearch&searchperience[controller]=Search&dataType=html&eID=tx_aoesolr_search&searchperience[facetsel][option][test][0]=value';
+		$testUrl = 'http://test.url/?searchperience[action]=testSearch&searchperience[controller]=Search&dataType=html&eID=tx_aoesolr_search&searchperience[facetsel][option][test][0]=value&searchperience[facetsel][range][price][min]=10&searchperience[facetsel][range][price][max]=1000';
 		$params = array(
 			'searchperience' => array(
 				'action'        => 'testSearch',
@@ -106,13 +117,18 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 						array(
 							'test' => array('0' => 'value')
 						)
+					),
+					'range'     => array(
+						'price' => array(
+							'min' => '10',
+							'max' => '1000'
+						)
 					)
 				)
 			),
 			'dataType'      => 'html',
 			'eID'           => 'tx_aoesolr_search'
 		);
-		//$testUrl = 'http://test.url/' . '?' . http_build_query($params);
 		$this->request->setEndPointHostname('http://test.url/');
 		$this->request->setEndpointPath('');
 		$this->request->buildRequestFromParams($params);
