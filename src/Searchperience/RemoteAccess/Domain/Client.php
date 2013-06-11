@@ -35,8 +35,14 @@ class Client {
 			$httpResponse 	= $httpRequest->send();
 			$rawResponse 	= $httpResponse->getBody(true);
 			$response->setRawResponse($rawResponse);
-		} catch(\Exception $e) {
+			$statusCode 	= $httpResponse->getStatusCode();
+			$response->setHttpStatus($statusCode);
 
+			if($statusCode !== 200) {
+				$response->setHasError(true);
+			}
+		} catch(\Exception $e) {
+			$response->setHasError(true);
 		}
 
 		return $response;

@@ -24,6 +24,11 @@ class Response {
 	protected $httpStatus;
 
 	/**
+	 * @var bool
+	 */
+	protected $hasError = false;
+
+	/**
 	 * @param int $httpStatus
 	 */
 	public function setHttpStatus($httpStatus) {
@@ -63,5 +68,19 @@ class Response {
 	 */
 	public function getRequest() {
 		return $this->request;
+	}
+
+	/**
+	 * @param boolean $hasError
+	 */
+	public function setHasError($hasError) {
+		$this->hasError = $hasError;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getHasError() {
+		return $this->hasError;
 	}
 }
