@@ -2,6 +2,7 @@
 
 
 namespace Searchperience\RemoteAccess\Domain;
+use Searchperience\RemoteAccess\Domain\Exeption\UrlExeption;
 
 /**
  * The searchperience request is responsible to generate an url that can be used to
@@ -51,7 +52,17 @@ class Request {
 	 */
 	private $eid = 'tx_aoesolr_search';
 
-	const FACET_MARKER = 'searchperience[facetsel][option]';
+	/**
+	 * @var string
+	 */
+	private $action = 'search';
+
+	/**
+	 * @var string
+	 */
+	private $controller = 'Search';
+
+	const FACET_MARKER = '[facetsel][option]';
 
 	/**
 	 * @var array key/count
@@ -71,7 +82,7 @@ class Request {
 	 */
 	public function getEid()
 	{
-		return $this->eid;
+		return '&eID=' . $this->eid;
 	}
 
 	/**
@@ -87,7 +98,7 @@ class Request {
 	 */
 	public function getDataType()
 	{
-		return $this->dataType;
+		return '&dataType='. $this->dataType;
 	}
 
 	/**
@@ -95,6 +106,10 @@ class Request {
 	 */
 	public function setEndPointHostname($endPointHostname)
 	{
+		if(!filter_var($endPointHostname, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+			throw new UrlExeption("wrong hostname format");
+		}
+
 		$this->endPointHostname = $endPointHostname;
 		return $this;
 	}
@@ -149,7 +164,7 @@ class Request {
 	public function setInstance($instance)
 	{
 		$this->instancePid = $instance;
-		return this;
+		return $this;
 	}
 
 	/**
@@ -189,6 +204,20 @@ class Request {
 	/**
 	 * @return string
 	 */
+	private function getAction() {
+		return '&' . $this->getNamespace() . '[action]=' . $this->action;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getController() {
+		return '&'. $this->getNamespace() . '[controller]=' . $this->controller;
+	}
+
+	/**
+	 * @return string
+	 */
 	private function generateFacetParams()
 	{
 		$facet = '';
@@ -201,7 +230,7 @@ class Request {
 			} else {
 				$this->addedFacests[$facets[0]] = 0;
 			}
-			$facet .= '&' . self::FACET_MARKER . '[' . $facets[0] .  ']' .
+			$facet .= '&' . $this->getNamespace() . self::FACET_MARKER . '[' . $facets[0] .  ']' .
 				'[' . $tmpFacetCount  . ']' . '=' . $facets[1];
 			$tmpFacetCount = 0;
 		}
@@ -217,8 +246,10 @@ class Request {
 		$path = str_replace('###instance###', $this->getInstance(), $this->getEndpointPath());
 		$this->url = $this->getEndPointHostname()
 			. $path
-			. '&dataType='. $this->getDataType()
-			. '&eID=' . $this->getEid()
+			. $this->getAction()
+			. $this->getController()
+			. $this->getDataType()
+			. $this->getEid()
 			. $this->generateFacetParams();
 		return $this->url;
 	}

@@ -28,7 +28,7 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 	 * @test
 	 */
 	public function testGetUrl() {
-		$testUrl = 'http://google.de/index.php?id=0&dataType=jsonp&eID=tx_aoesolr_search&searchperience[facetsel][option][brand_s][0]=puma&searchperience[facetsel][option][brand_s][1]=nike&searchperience[facetsel][option][cat_s][0]=cloth';
+		$testUrl = 'http://google.de/index.php?id=0&searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search&searchperience[facetsel][option][brand_s][0]=puma&searchperience[facetsel][option][brand_s][1]=nike&searchperience[facetsel][option][cat_s][0]=cloth';
 		$this->request->setEndPointHostname('http://google.de/');
 		$this->request->setFacetOptionValue('brand_s', 'puma');
 		$this->request->setFacetOptionValue('brand_s', 'nike');
