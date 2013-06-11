@@ -39,6 +39,16 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function testGetUrlWithCustomPath() {
+		$testUrl = 'http://google.de/test/test?searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search';
+		$this->request->setEndPointHostname('http://google.de/');
+		$this->request->setEndpointPath('test/test');
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
+
+	/**
+	 * @test
+	 */
 	public function testCanUseDefaultEndPointHost() {
 		$this->markTestSkipped('Instance should also be able to be a number');
 		$this->request->setInstance('foo');
@@ -55,6 +65,16 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 		$this->request->setFacetOptionValue('brand_s', 'nike');
 		$this->request->setFacetOptionValue('cat_s', 'cloth');
 		$this->request->setNamespace('tx_aoesolr_pi1');
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
+
+	/**
+	 * @test
+	 */
+	public function testGetUrlWithEmptyPath() {
+		$testUrl = 'http://google.de/?searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search';
+		$this->request->setEndPointHostname('http://google.de/');
+		$this->request->setEndpointPath('');
 		$this->assertEquals($testUrl, $this->request->getUrl());
 	}
 }
