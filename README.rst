@@ -66,16 +66,16 @@ The application flow is:
 
 Example:
 
-	$request = \Searchperience\RemoteAccess\Domain\Factory::createRequest();
-	$request->addFacetOption('category_s','plates');
-	$request->addFacetOption('color_s','blue');
+::
+		$request = \Searchperience\RemoteAccess\Domain\Factory::createRequest();
+		$request->addFacetOption('category_s','plates');
+		$request->addFacetOption('color_s','blue');
 
-	$client  	= \Searchperience\RemoteAccess\Domain\Factory::createClient();
-	$response 	= $client->fetch($request);
+		$client  	= \Searchperience\RemoteAccess\Domain\Factory::createClient();
+		$response 	= $client->fetch($request);
 
-		//raw response contains the response from searchperience and can be used within your application
-	$rawResponse 	= $response->getRawResponse();
-
+			//raw response contains the response from searchperience and can be used within your application
+		$rawResponse 	= $response->getRawResponse();
 
 .. |buildStatusIcon| image:: https://secure.travis-ci.org/AOEmedia/searchperience-remote-access.png?branch=master
    :alt: Build Status
