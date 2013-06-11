@@ -3,13 +3,14 @@
 namespace Searchperience\RemoteAccess\Domain;
 
 /**
- * Class Factory
- *
  * The factory class is responsible to create a client with all dependencies.
  *
  * @package Searchperience\RemoteAccess\Domain
+ * @author Pavlo Bogomolenko <pavlo.bogomolenko@aoemedia.de>
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
  */
 class Factory {
+
 	/**
 	 * @return \Searchperience\RemoteAccess\Domain\Client
 	 */

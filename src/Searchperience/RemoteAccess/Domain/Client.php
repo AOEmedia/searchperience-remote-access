@@ -3,7 +3,12 @@
 namespace Searchperience\RemoteAccess\Domain;
 
 /**
- * Class Client
+ * The client is responsible to get the content that will be produced from a searchperience
+ * request and retrieve it.
+ *
+ * @package Searchperience\RemoteAccess\Domain
+ * @author Pavlo Bogomolenko <pavlo.bogomolenko@aoemedia.de>
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
  */
 class Client {
 

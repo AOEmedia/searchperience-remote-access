@@ -4,7 +4,12 @@
 namespace Searchperience\RemoteAccess\Domain;
 
 /**
+ * The response contains the response from the searchperience system including
+ * httpStatus.
+ *
  * @package Searchperience\Tests\RemoteAccess\Domain
+ * @author Pavlo Bogomolenko <pavlo.bogomolenko@aoemedia.de>
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
  */
 class Response {
 
