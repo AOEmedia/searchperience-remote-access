@@ -130,7 +130,7 @@ class Request {
 	 * @return string
 	 */
 	public function getDataTypeUrlPart() {
-		return '&dataType='. $this->dataType;
+		return $this->buildEncodedUrlParamPart('&', '', 'dataType', $this->dataType);
 	}
 
 	/**
@@ -180,9 +180,11 @@ class Request {
 			throw new FacetExeption("illegal charecter detected in facet option");
 		}
 
+		/*
 		if (preg_match('/[^A-Za-z0-9\-]/', $value)) {
 			throw new FacetExeption("illegal charecter detected in facet value");
 		}
+		*/
 
 		$this->facetOptionValue[] = array($option, $value);
 		return $this;
@@ -232,14 +234,14 @@ class Request {
 	 * @return string
 	 */
 	private function getActionUrlPart() {
-		return $this->getNamespace() . '[action]=' . $this->action;
+		return $this->buildEncodedUrlParamPart('', $this->getNamespace(), '[action]', $this->action);
 	}
 
 	/**
 	 * @return string
 	 */
 	private function getControllerUrlPart() {
-		return '&'. $this->getNamespace() . '[controller]=' . $this->controller;
+		return $this->buildEncodedUrlParamPart('&', $this->getNamespace(), '[controller]', $this->controller);
 	}
 
 	/**
@@ -259,7 +261,7 @@ class Request {
 			return  '';
 		}
 
-		return '&'. $this->getNamespace() . '[querystring]=' . $this->queryString;
+		return $this->buildEncodedUrlParamPart('&', $this->getNamespace(), '[querystring]', $this->queryString);
 	}
 
 	/**
@@ -275,9 +277,11 @@ class Request {
 			throw new FacetExeption("illegal charecter detected in facet range key");
 		}
 
+		/*
 		if (preg_match('/[^A-Za-z0-9\-]/', $value)) {
 			throw new FacetExeption("illegal charecter detected in facet range value");
 		}
+		*/
 
 		$this->facetRangeOptionValue[$option][] = array($key, $value);
 		return $this;
@@ -306,8 +310,8 @@ class Request {
 			} else {
 				$this->addedFacests[$facets[0]] = 0;
 			}
-			$facet .= '&' . $this->getNamespace() . self::FACET_MARKER . '[' . $facets[0] .  ']' .
-				'[' . $tmpFacetCount  . ']' . '=' . $facets[1];
+			$facet .= $this->buildEncodedUrlParamPart('&', $this->getNamespace(), self::FACET_MARKER . '[' . $facets[0] .  ']' .
+				'[' . $tmpFacetCount  . ']', $facets[1]);
 			$tmpFacetCount = 0;
 		}
 		return $facet;
@@ -320,8 +324,8 @@ class Request {
 		$facetStr = '';
 		foreach($this->getFacetRangeOptionValue() as $facetsKey => $facetRange) {
 			foreach($facetRange as $facet) {
-				$facetStr .= '&' . $this->getNamespace() . self::RANGE_FACET_MARKER . '[' . $facetsKey .  ']' .
-					'[' . $facet[0]  . ']' . '=' . $facet[1];
+				$facetStr .= $this->buildEncodedUrlParamPart('&', $this->getNamespace(), self::RANGE_FACET_MARKER . '[' . $facetsKey .  ']' .
+					'[' . $facet[0]  . ']', $facet[1]);
 			}
 		}
 		return $facetStr;
@@ -379,10 +383,21 @@ class Request {
 	}
 
 	/**
+	 * @param $glue
+	 * @param $namespace
+	 * @param $key
+	 * @param $value
+	 * @return string
+	 */
+	private function buildEncodedUrlParamPart($glue, $namespace, $key, $value) {
+		$url = $glue . rawurlencode($namespace . $key) . '='  . rawurlencode($value);
+		return $url;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getUrl() {
-		$this->generateFacetRangeUrlParts();
 		$this->url = $this->getEndPointHostname()
 			. $this->getPathUrlPart()
 			. $this->getActionUrlPart()
