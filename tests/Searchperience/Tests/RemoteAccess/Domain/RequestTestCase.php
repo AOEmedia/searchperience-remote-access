@@ -130,4 +130,17 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 		$this->request->setQueryString('searching');
 		$this->assertEquals($testUrl, $this->request->getUrl());
 	}
+
+	/**
+	 * @test
+	 */
+	public function testCanSetHierarchicalFacetValue() {
+		$this->markTestIncomplete('Open');
+		$testUrl = 'http://google.de/index.php?id=0&tx_aoesolr_pi1[action]=search&tx_aoesolr_pi1[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search&tx_aoesolr_pi1[facetsel][option][pr_categoryhierarchy][0]=2-Bellezza%2FAccessori+di+Bellezza%2FAccessori';
+		$this->request->setEndPointHostname('http://google.de/');
+		$this->request->setNamespace('tx_aoesolr_pi1');
+		$this->request->setFacetOptionValue('pr_categoryhierarchy','2-Bellezza/Accessori di Bellezza/Accessori');
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
+
 }
