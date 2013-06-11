@@ -222,11 +222,4 @@ class Request {
             . $this->generateFacetParams();
         return $this->url;
     }
-
-	/**
-	 * @return string
-	 */
-	public function getUrl() {
-
-	}
 }
