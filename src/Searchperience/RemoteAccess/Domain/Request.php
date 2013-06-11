@@ -218,7 +218,7 @@ class Request {
 	/**
 	 * @return string
 	 */
-	private function generateFacetParams()
+	public function generateFacetParams()
 	{
 		$facet = '';
 		$tmpFacetCount = 0;
@@ -240,12 +240,21 @@ class Request {
 	/**
 	 * @return string
 	 */
+	public function getPath() {
+		$path = '';
+		if(strstr($this->getEndpointPath(), '###instance###')) {
+			$path = str_replace('###instance###', $this->getInstance(), $this->getEndpointPath());
+		}
+		return $path;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getUrl()
 	{
-		$this->generateFacetParams();
-		$path = str_replace('###instance###', $this->getInstance(), $this->getEndpointPath());
 		$this->url = $this->getEndPointHostname()
-			. $path
+			. $this->getPath()
 			. $this->getAction()
 			. $this->getController()
 			. $this->getDataType()
