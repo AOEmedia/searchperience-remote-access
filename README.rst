@@ -65,8 +65,10 @@ The application flow is:
 4. Use the response in your application
 
 Example:
+-----------
 
 ::
+
 		$request = \Searchperience\RemoteAccess\Domain\Factory::createRequest();
 		$request->addFacetOption('category_s','plates');
 		$request->addFacetOption('color_s','blue');
