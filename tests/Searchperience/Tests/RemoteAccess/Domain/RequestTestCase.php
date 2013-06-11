@@ -43,7 +43,16 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 		$testUrl = 'http://google.de/test/test?searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search';
 		$this->request->setEndPointHostname('http://google.de/');
 		$this->request->setEndpointPath('test/test');
-		var_dump($this->request->getUrl());
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
+
+	/**
+	 * @test
+	 */
+	public function testGetUrlWithEmptyPath() {
+		$testUrl = 'http://google.de/?searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search';
+		$this->request->setEndPointHostname('http://google.de/');
+		$this->request->setEndpointPath('');
 		$this->assertEquals($testUrl, $this->request->getUrl());
 	}
 }
