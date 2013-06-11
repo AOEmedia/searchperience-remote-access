@@ -2,6 +2,7 @@
 
 
 namespace Searchperience\RemoteAccess\Domain;
+use Searchperience\RemoteAccess\Domain\Exeption\FacetExeption;
 use Searchperience\RemoteAccess\Domain\Exeption\UrlExeption;
 
 /**
@@ -146,6 +147,14 @@ class Request {
 	 */
 	public function setFacetOptionValue($option, $value)
 	{
+		if (preg_match('/[^A-Za-z0-9_\-]/', $option)) {
+			throw new FacetExeption("illegal charecter detected in facet option");
+		}
+
+		if (preg_match('/[^A-Za-z0-9\-]/', $value)) {
+			throw new FacetExeption("illegal charecter detected in facet value");
+		}
+
 		$this->facetOptionValue[] = array($option, $value);
 		return $this;
 	}
