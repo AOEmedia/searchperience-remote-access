@@ -205,7 +205,7 @@ class Request {
 	 * @return string
 	 */
 	private function getAction() {
-		return '&' . $this->getNamespace() . '[action]=' . $this->action;
+		return $this->getNamespace() . '[action]=' . $this->action;
 	}
 
 	/**
@@ -243,7 +243,9 @@ class Request {
 	public function getPath() {
 		$path = '';
 		if(strstr($this->getEndpointPath(), '###instance###')) {
-			$path = str_replace('###instance###', $this->getInstance(), $this->getEndpointPath());
+			$path = str_replace('###instance###', $this->getInstance(), $this->getEndpointPath()) . '&';
+		} else {
+			$path .= $this->getEndpointPath() . '?';
 		}
 		return $path;
 	}

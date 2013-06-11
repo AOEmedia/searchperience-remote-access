@@ -35,4 +35,15 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 		$this->request->setFacetOptionValue('cat_s', 'cloth');
 		$this->assertEquals($testUrl, $this->request->getUrl());
 	}
+
+	/**
+	 * @test
+	 */
+	public function testGetUrlWithCustomPath() {
+		$testUrl = 'http://google.de/test/test?searchperience[action]=search&searchperience[controller]=Search&dataType=jsonp&eID=tx_aoesolr_search';
+		$this->request->setEndPointHostname('http://google.de/');
+		$this->request->setEndpointPath('test/test');
+		var_dump($this->request->getUrl());
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
 }
