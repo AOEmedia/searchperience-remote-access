@@ -223,4 +223,10 @@ class Request {
         return $this->url;
     }
 
+	/**
+	 * @return string
+	 */
+	public function getUrl() {
+
+	}
 }
