@@ -59,6 +59,22 @@ class Request {
 	private $action = 'search';
 
 	/**
+	 * @param string $action
+	 */
+	public function setAction($action)
+	{
+		$this->action = $action;
+	}
+
+	/**
+	 * @param string $controller
+	 */
+	public function setController($controller)
+	{
+		$this->controller = $controller;
+	}
+
+	/**
 	 * @var string
 	 */
 	private $controller = 'Search';
@@ -202,15 +218,6 @@ class Request {
 	}
 
 	/**
-	 * @param string $url
-	 */
-	public function setUrl($url)
-	{
-		$this->url = $url;
-		return $this;
-	}
-
-	/**
 	 * @return string
 	 */
 	private function getAction() {
@@ -257,6 +264,37 @@ class Request {
 			$path .= $this->getEndpointPath() . '?';
 		}
 		return $path;
+	}
+
+	/**
+	 * @param array $params
+	 */
+	public function buildRequestFromParams($params = array()) {
+		foreach ($params as $key => $value) {
+			switch($key) {
+				case 'dataType':
+					$this->setDataType($value);
+					break;
+				case 'eID':
+					$this->setEid($value);
+					break;
+				case 'action':
+					$this->setAction($value);
+					break;
+				case 'controller':
+					$this->setController($value);
+					break;
+				case 'option':
+					foreach($value as $facetMap) {
+						foreach($facetMap as $facetKey => $facetValue) {
+							$this->setFacetOptionValue($facetKey, $facetValue[0]);
+						}
+					}
+					break;
+				default:
+					$this->buildRequestFromParams($value);
+			}
+		}
 	}
 
 	/**

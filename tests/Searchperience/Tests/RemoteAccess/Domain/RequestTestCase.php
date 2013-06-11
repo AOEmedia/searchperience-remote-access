@@ -77,4 +77,31 @@ class RequestTestCase extends \Searchperience\Tests\BaseTestCase {
 		$this->request->setEndpointPath('');
 		$this->assertEquals($testUrl, $this->request->getUrl());
 	}
+
+	/**
+	 * @test
+	 */
+	public function testBuildRequestFromParams() {
+		$testUrl = 'http://test.url/?searchperience[action]=testSearch&searchperience[controller]=Search&dataType=html&eID=tx_aoesolr_search&searchperience[facetsel][option][test][0]=value';
+		$params = array(
+			'searchperience' => array(
+				'action'        => 'testSearch',
+				'controller'    => 'Search',
+				'facetsel'      => array(
+					'option'    => array(
+						array(
+							'test' => array('0' => 'value')
+						)
+					)
+				)
+			),
+			'dataType'      => 'html',
+			'eID'           => 'tx_aoesolr_search'
+		);
+		//$testUrl = 'http://test.url/' . '?' . http_build_query($params);
+		$this->request->setEndPointHostname('http://test.url/');
+		$this->request->setEndpointPath('');
+		$this->request->buildRequestFromParams($params);
+		$this->assertEquals($testUrl, $this->request->getUrl());
+	}
 }
