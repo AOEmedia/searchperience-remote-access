@@ -22,7 +22,7 @@ class Request {
 	/**
 	 * @var string
 	 */
-	private $endPointHostname = 'http://client.searchperience.me/';
+	private $endPointHostname = 'http://client.endpointsystem.de/';
 
 	/**
 	 * @var string
@@ -52,7 +52,7 @@ class Request {
 	/**
 	 * @var string
 	 */
-	private $dataType = 'jsonp';
+	private $dataType = 'html';
 
 	/**
 	 * @var string
@@ -180,11 +180,11 @@ class Request {
 			throw new FacetExeption("illegal charecter detected in facet option");
 		}
 
-		/*
-		if (preg_match('/[^A-Za-z0-9\-]/', $value)) {
+
+		if (preg_match('/[^A-Za-z0-9\-\/ ]/', $value)) {
 			throw new FacetExeption("illegal charecter detected in facet value");
 		}
-		*/
+
 
 		$this->facetOptionValue[] = array($option, $value);
 		return $this;
